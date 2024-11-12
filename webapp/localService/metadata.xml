@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="CatalogService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <Annotation Term="Core.Links">
+                <Collection>
+                    <Record>
+                        <PropertyValue Property="rel" String="author"/>
+                        <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+                    </Record>
+                </Collection>
+            </Annotation>
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="EAs" EntityType="CatalogService.EAs">
+                    <NavigationPropertyBinding Path="experience" Target="Experience"/>
+                    <NavigationPropertyBinding Path="development" Target="SkillDevelopment"/>
+                    <NavigationPropertyBinding Path="assignments" Target="Engagements"/>
+                </EntitySet>
+                <EntitySet Name="Skills" EntityType="CatalogService.Skills"/>
+                <EntitySet Name="Engagements" EntityType="CatalogService.Engagements">
+                    <NavigationPropertyBinding Path="ea" Target="EAs"/>
+                </EntitySet>
+                <EntitySet Name="Experience" EntityType="CatalogService.Experience">
+                    <NavigationPropertyBinding Path="ea" Target="EAs"/>
+                </EntitySet>
+                <EntitySet Name="SkillDevelopment" EntityType="CatalogService.SkillDevelopment">
+                    <NavigationPropertyBinding Path="ea" Target="EAs"/>
+                </EntitySet>
+            </EntityContainer>
+            <EntityType Name="EAs">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="empId" Type="Edm.String" MaxLength="15"/>
+                <Property Name="name" Type="Edm.String"/>
+                <Property Name="email" Type="Edm.String"/>
+                <Property Name="region" Type="Edm.String"/>
+                <Property Name="country" Type="Edm.String"/>
+                <NavigationProperty Name="experience" Type="Collection(CatalogService.Experience)" Partner="ea"/>
+                <NavigationProperty Name="development" Type="Collection(CatalogService.SkillDevelopment)" Partner="ea"/>
+                <NavigationProperty Name="assignments" Type="Collection(CatalogService.Engagements)" Partner="ea"/>
+            </EntityType>
+            <EntityType Name="Skills">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="skillType" Type="Edm.String"/>
+                <Property Name="skillDescription" Type="Edm.String"/>
+            </EntityType>
+            <EntityType Name="Engagements">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="CRMId" Type="Edm.String"/>
+                <Property Name="CustomerName" Type="Edm.String"/>
+                <Property Name="isActive" Type="Edm.Boolean"/>
+                <Property Name="isLead" Type="Edm.Boolean"/>
+                <Property Name="leadEA" Type="Edm.String"/>
+                <Property Name="comment" Type="Edm.String"/>
+                <NavigationProperty Name="ea" Type="CatalogService.EAs" Partner="assignments">
+                    <ReferentialConstraint Property="ea_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="ea_ID" Type="Edm.Guid"/>
+            </EntityType>
+            <EntityType Name="Experience">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="ea" Type="CatalogService.EAs" Partner="experience">
+                    <ReferentialConstraint Property="ea_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="ea_ID" Type="Edm.Guid"/>
+                <Property Name="skills" Type="Edm.String"/>
+                <Property Name="level" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="SkillDevelopment">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="ea" Type="CatalogService.EAs" Partner="development">
+                    <ReferentialConstraint Property="ea_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="ea_ID" Type="Edm.Guid"/>
+                <Property Name="skills" Type="Edm.String"/>
+            </EntityType>
+            <Annotations Target="CatalogService.EAs/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.Skills/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.Engagements/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.Experience/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+            <Annotations Target="CatalogService.SkillDevelopment/ID">
+                <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
