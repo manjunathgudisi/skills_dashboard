@@ -149,7 +149,19 @@
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
                     "type": "ResponsiveTable",
-                    "enableExport": true
+                    "enableExport": true,
+                    "selectAll": true,
+                    "personalization": {
+                      "column": true
+                    },
+                    "quickVariantSelection": {
+                      "paths": [
+                        {
+                          "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#table"
+                        }
+                      ],
+                      "showCounts": true
+                    }
                   },
                   "columns": {
                     "DataField::name": {
