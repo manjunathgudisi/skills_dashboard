@@ -214,6 +214,15 @@
       "type": "XML",
       "async": true,
       "id": "appRootView"
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ListReport.ListReportController#skillsdashboard::EAsList": {
+            "controllerName": "skillsdashboard.ext.controller.EAsListController"
+          }
+        }
+      }
     }
   },
   "sap.fiori": {
